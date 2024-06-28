@@ -5,9 +5,9 @@
 #include <unordered_set>
 
 // External includes
-#include <csv-parser/csv.hpp>
+#include "vendor/csv-parser/csv.hpp"
 
-namespace rf {
+namespace RF {
 enum class ForgeResult
 {
     Success,
@@ -15,6 +15,8 @@ enum class ForgeResult
     Failure_Permission,
     // CSV formatting failure
     Failure_InvalidFormat,
+    // CSV file could not open
+    Failure_CouldNotOpen,
     // Unknown/other failure
     Failure_Unknown
 };
@@ -27,14 +29,19 @@ class RecordForge
 public:
     // TODO: Include a parameter for the processor type (Lua, Python) via enum
     // OR a reference to a processor.
-    explicit RecordForge(const std::string& path, const std::unordered_set<std::string>& skipColumns);
+    RecordForge(const std::string& path, const std::unordered_set<std::string>& skipColumns, std::ostream& output) :
+        mSkipColumns(skipColumns),
+        mPath(path)
+    {}
     
     /**
      * Runs the full pipeline.
+     *
+     * @return The result of the pipeline.
      */
     ForgeResult Forge();
 private:
-    std::unordered_set<std::string> mSkipColumns;
-    std::string path;
+    const std::unordered_set<std::string> mSkipColumns;
+    const std::string_view mPath;
 };
 }
