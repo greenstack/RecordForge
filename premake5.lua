@@ -4,7 +4,7 @@ project "RecordForge"
     cppdialect "C++17"
 
     targetdir ("bin/%{cfg.buildcfg}")
-    objectdir ("obj/%{cfg.buildcfg}")
+    objdir ("obj/%{cfg.buildcfg}")
 
     files
     {
